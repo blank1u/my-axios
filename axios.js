@@ -5,8 +5,19 @@ class Axios {
     this.defaultConfig = {};
     this.test = "test";
   }
-  fetch() {
-    return Promise.resolve(1);
+  fetch(options) {
+    return new Promise((resolve, reject) => {
+      let { url = "", method = "get" } = options;
+      let xhr = new XMLHttpRequest();
+      xhr.open(method, url, true);
+      xhr.onload = function () {
+        console.log(xhr.responseText);
+      };
+      xhr.send(null);
+    });
+  }
+  request(options) {
+    return this.fetch(options);
   }
 }
 
@@ -47,7 +58,7 @@ console.dir(Axios);
  */
 function createInstance(defaultConfig) {
   let context = new Axios();
-  let instance = context.fetch;
+  let instance = context.request.bind(context);
   utils.extends(instance, Axios.prototype, context);
   utils.extends(instance, context);
   return instance;

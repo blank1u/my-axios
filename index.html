@@ -9,18 +9,18 @@
 <body>
 <script>
     axios({
-        url: '',
-        methods: 'post'
+        url: './data.json',
+        method: 'get'
     }).then(res => {
         console.log(res)
     })
 
-    axios.get({
-        url: '',
-        methods: 'post'
-    }).then(res=>{
-        console.log(res)
-    })
+    // axios.get({
+    //     url: './data.json',
+    //     method: 'get'
+    // }).then(res=>{
+    //     console.log(res)
+    // })
 
 </script>
 </body>
