@@ -1,0 +1,28 @@
+{
+  "name": "my-axios",
+  "version": "1.0.0",
+  "description": "Implement Axios",
+  "main": "axios.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ganp1020/my-axios.git"
+  },
+  "keywords": [
+    "axios",
+    "node",
+    "fetch",
+    "javascript"
+  ],
+  "author": "ganp",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ganp1020/my-axios/issues"
+  },
+  "homepage": "https://github.com/ganp1020/my-axios#readme",
+  "devDependencies": {
+    "prettier": "^2.0.5"
+  }
+}
