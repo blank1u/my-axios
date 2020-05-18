@@ -8,13 +8,42 @@
 </head>
 <body>
 <script>
+
+
+    axios.interceptors.request.use(function (config) {
+        console.log('request1.....')
+        return config
+    }, err => {
+        console.log(err)
+    })
+
+    axios.interceptors.request.use(function (config) {
+        console.log('request2.....')
+        return config
+    }, err => {
+        console.log(err)
+    })
+
+    axios.interceptors.response.use(function (config) {
+        console.log('response1.....')
+        return config
+    }, err => {
+        console.log(err)
+    })
+
+    axios.interceptors.response.use(function (config) {
+        console.log('response2.....')
+        return config
+    }, err => {
+        console.log(err)
+    })
+
     axios({
         url: './data.json',
         method: 'get'
     }).then(res => {
         console.log(res)
     })
-
     // axios.get({
     //     url: './data.json',
     //     method: 'get'
