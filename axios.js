@@ -1,30 +1,15 @@
 // Created by ganping on 2020/5/18
 
 class Axios {
-  constructor(defaultConfig) {
-    this.defaultConfig = {};
-    this.test = "test";
+  constructor() {
     this.interceptors = {
       request: new InterceptorsManager(),
       response: new InterceptorsManager(),
     };
-  }
-  fetch(options) {
-    return new Promise((resolve, reject) => {
-      let { url = "", method = "get" } = options;
-      let xhr = new XMLHttpRequest();
-      xhr.open(method, url, true);
-      xhr.onload = function () {
-        resolve(xhr.responseText);
-      };
-      xhr.onerror = function () {
-        reject("err");
-      };
-      xhr.send(null);
-    });
+    this.adapter = new Adapters();
   }
   request(options) {
-    let chain = [this.fetch, undefined];
+    let chain = [this.dispatchXHR.bind(this), undefined];
     this.interceptors.request.handeles.forEach((interceptor) => {
       chain.unshift(interceptor.fulfilled, interceptor.rejected);
     });
@@ -36,6 +21,15 @@ class Axios {
       promise = promise.then(chain.shift(), chain.shift());
     }
     return promise;
+  }
+  dispatchXHR() {
+    if (typeof process === undefined) {
+      // 服务端
+      this.adapter.fetch();
+    } else {
+      // 客户端
+      this.adapter.http();
+    }
   }
 }
 
@@ -60,13 +54,14 @@ let utils = {
 };
 
 //扩展对象
-methodsArrList = ["post", "put", "get", "head", "options", "delete"];
-methodsArrList.forEach((method) => {
+methodsList = ["post", "put", "get", "head", "options", "delete"];
+methodsList.forEach((method) => {
   Axios.prototype[method] = function () {
     return this.request();
   };
 });
 
+// 拦截管理器
 class InterceptorsManager {
   constructor() {
     this.handeles = [];
@@ -76,6 +71,26 @@ class InterceptorsManager {
       fulfilled,
       rejected,
     });
+  }
+}
+// 适配器（服务端与客户端）
+class Adapters {
+  fetch(options) {
+    return new Promise((resolve, reject) => {
+      let { url = "", method = "get" } = options;
+      let xhr = new XMLHttpRequest();
+      xhr.open(method, url, true);
+      xhr.onload = function () {
+        resolve(xhr.responseText);
+      };
+      xhr.onerror = function () {
+        reject("err");
+      };
+      xhr.send(null);
+    });
+  }
+  http() {
+    console.log("服务端请求...doSomeThing");
   }
 }
 
